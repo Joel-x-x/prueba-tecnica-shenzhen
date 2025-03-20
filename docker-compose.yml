@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver_container
+    restart: always
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "S3guro!Pass"
+      MSSQL_USER: "sa"
+      MSSQL_DATABASE: "shenzhen"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - mynetwork
+
+volumes:
+  sqlserver_data:
+
+networks:
+  mynetwork:
