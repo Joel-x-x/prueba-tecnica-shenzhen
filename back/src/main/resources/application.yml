@@ -31,7 +31,8 @@ server:
 # JWT
 api:
   security:
-    secret: ${JWT_SECRET}
+    secret: 96fbe8547677e92c18a10f72c4c72050ab1943c6605881c1fbf11a07ce5a4378
+    # Cambiar y meter en variable de entorno
     expiration: 86400000
     refresh-token:
       expiration: 604800000
