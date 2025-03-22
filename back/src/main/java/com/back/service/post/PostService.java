@@ -46,8 +46,8 @@ public class PostService {
 
         PostEntity post = findPostById(id);
 
-        // Validate same user or admin
-        if(post.getUser().getId().equals(user.getId()) || this.isAdmin(user)) {
+        // Validate same user, admin, or public post
+        if(post.getUser().getId().equals(user.getId()) || this.isAdmin(user) || post.getIsPublic()) {
             return new PostResponse(post);
         }
             throw new SecurityException("Unauthorized");
