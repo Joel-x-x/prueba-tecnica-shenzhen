@@ -101,14 +101,15 @@ public class PostService {
         throw new SecurityException("Unauthorized");
     }
 
-    public PostResponse delete(UUID id, Authentication authentication) {
+    public void delete(UUID id, Authentication authentication) {
         UserEntity user = (UserEntity) authentication.getPrincipal();
 
         PostEntity post = findPostById(id);
 
         if(post.getUser().getId().equals(user.getId()) || this.isAdmin(user)) {
             post.setDeleted(true);
-            return new PostResponse(this.postRepository.save(post));
+            this.postRepository.save(post);
+            return;
         }
 
         throw new SecurityException("Unauthorized");
