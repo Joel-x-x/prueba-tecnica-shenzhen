@@ -3,6 +3,7 @@ package com.back.service.user;
 import com.back.domain.role.entity.RoleEntity;
 import com.back.domain.user.dto.UserRequest;
 import com.back.domain.user.dto.UserResponse;
+import com.back.domain.user.dto.UserUpdateRequest;
 import com.back.domain.user.entity.UserEntity;
 import com.back.infrastructure.repository.RoleRepository;
 import com.back.infrastructure.repository.UserRepository;
@@ -126,10 +127,14 @@ class UserServiceTest {
         when(passwordEncoder.encode(request.password())).thenReturn("encodedPassword");
         when(userRepository.save(any(UserEntity.class))).thenReturn(user);
 
-        UserResponse result = userService.update(request, user.getId());
+        UserResponse result =
+                userService.update(UserUpdateRequest.builder()
+                        .firstNames(request.firstNames())
+                        .lastNames(request.lastNames())
+                        .build(),
+                user.getId());
 
         assertNotNull(result);
-        assertEquals(request.email(), result.email());
         assertEquals(request.firstNames(), result.firstNames());
         assertEquals(request.lastNames(), result.lastNames());
     }

@@ -2,6 +2,7 @@ package com.back.controller.user;
 
 import com.back.domain.user.dto.UserRequest;
 import com.back.domain.user.dto.UserResponse;
+import com.back.domain.user.dto.UserUpdateRequest;
 import com.back.infrastructure.exception.ResultResponse;
 import com.back.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -63,7 +64,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<ResultResponse<UserResponse, String>> update(@RequestBody UserRequest request, @PathVariable UUID id) {
+    public ResponseEntity<ResultResponse<UserResponse, String>> update(@RequestBody UserUpdateRequest request, @PathVariable UUID id) {
         return ResponseEntity.ok(
                 ResultResponse.success(
                         this.userService.update(request, id), 200

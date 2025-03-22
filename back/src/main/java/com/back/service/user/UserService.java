@@ -3,12 +3,14 @@ package com.back.service.user;
 import com.back.domain.role.entity.RoleEntity;
 import com.back.domain.user.dto.UserRequest;
 import com.back.domain.user.dto.UserResponse;
+import com.back.domain.user.dto.UserUpdateRequest;
 import com.back.domain.user.entity.UserEntity;
 import com.back.infrastructure.exception.IntegrityValidation;
 import com.back.infrastructure.repository.RoleRepository;
 import com.back.infrastructure.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -62,20 +64,22 @@ public class UserService {
         );
     }
 
-    public UserResponse update(UserRequest request, UUID id) {
+    public UserResponse update(UserUpdateRequest request, UUID id) {
         UserEntity user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
-        RoleEntity role = roleRepository.findByName(request.role())
-                .orElseThrow(() -> new IntegrityValidation("Role not found"));
+        if(!StringUtils.isBlank(request.role())) {
+            RoleEntity role = roleRepository.findByName(request.role())
+                    .orElseThrow(() -> new IntegrityValidation("Role not found"));
+            Set<RoleEntity> roles = Collections.singleton(role);
+            user.setRoles(roles);
+        }
 
-        Set<RoleEntity> roles = Collections.singleton(role);
+        if (!StringUtils.isBlank(request.firstNames()))
+            user.setFirstNames(request.firstNames());
 
-        user.setFirstNames(request.firstNames());
-        user.setLastNames(request.lastNames());
-        user.setEmail(request.email());
-        user.setPassword(passwordEncoder.encode(request.password()));
-        user.setRoles(roles);
+        if (!StringUtils.isBlank(request.lastNames()))
+            user.setLastNames(request.lastNames());
 
         return new UserResponse(userRepository.save(user));
     }

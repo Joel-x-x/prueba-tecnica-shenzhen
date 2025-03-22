@@ -77,6 +77,14 @@ public class ErrorHandler {
                 HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(IntegrityValidation.class)
+    public ResponseEntity<ResultResponse<Object,String>> handleIntegrityValidation(
+            IntegrityValidation exc
+    ) {
+        return buildErrorResponse("Integrity validation: " + exc.getMessage(),
+                HttpStatus.BAD_REQUEST);
+    }
+
     private ResponseEntity<ResultResponse<Object,String>> buildErrorResponse(
             String message, HttpStatus status
     ){

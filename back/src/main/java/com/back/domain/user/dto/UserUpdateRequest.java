@@ -1,4 +1,11 @@
 package com.back.domain.user.dto;
 
-public record UserUpdateRequest() {
+import lombok.Builder;
+
+@Builder
+public record UserUpdateRequest(
+        String firstNames,
+        String lastNames,
+        String role
+) {
 }

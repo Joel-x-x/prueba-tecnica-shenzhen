@@ -92,7 +92,7 @@ class PostServiceTest {
     }
 
     @Test
-    void get_Unauthorized() {
+    void getUnauthorized() {
         UserEntity otherUser = new UserEntity();
         otherUser.setId(UUID.randomUUID());
         post.setUser(otherUser);
@@ -126,7 +126,7 @@ class PostServiceTest {
     }
 
     @Test
-    void update_Unauthorized() {
+    void updateUnauthorized() {
         UserEntity otherUser = new UserEntity();
         otherUser.setId(UUID.randomUUID());
         post.setUser(otherUser);
