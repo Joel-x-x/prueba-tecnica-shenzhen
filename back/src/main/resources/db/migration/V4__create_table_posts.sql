@@ -1,7 +1,14 @@
-CREATE TABLE user_roles (
+CREATE TABLE posts (
+    id UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(),
+    title NVARCHAR(50) NOT NULL,
+    content NVARCHAR(1000) NOT NULL,
+    is_public BIT NOT NULL,
     user_id UNIQUEIDENTIFIER NOT NULL,
-    role_id UNIQUEIDENTIFIER NOT NULL,
-    PRIMARY KEY (user_id, role_id),
-    FOREIGN KEY (role_id) REFERENCES roles (id),
-    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+    created_at DATETIME2(6) NOT NULL DEFAULT SYSDATETIME(),
+    updated_at DATETIME2(6) NOT NULL DEFAULT SYSDATETIME(),
+    deleted BIT NOT NULL DEFAULT 0,
+    deleted_at DATETIME2(6) NULL,
+
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );

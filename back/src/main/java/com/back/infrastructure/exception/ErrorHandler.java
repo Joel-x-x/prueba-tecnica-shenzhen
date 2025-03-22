@@ -53,20 +53,28 @@ public class ErrorHandler {
         return buildValidationResponse(messages);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ResultResponse<Object,String>> handleGeneralException(
-            Exception exc
-    ){
-        return buildErrorResponse("Internal server error:" + exc.getMessage(),
-                HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
     @ExceptionHandler(JpaSystemException.class)
     public ResponseEntity<ResultResponse<Object,String>> handleJpaSystemException(
             JpaSystemException exc
     ){
         return buildErrorResponse("System error: " + exc.getMessage(),
                 HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ResultResponse<Object,String>> handleGeneralException(
+            Exception exc
+    ){
+        return buildErrorResponse("Internal server error: " + exc.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(SecurityException.class)
+    public ResponseEntity<ResultResponse<Object,String>> handleSecurityException(
+            SecurityException exc
+    ) {
+        return buildErrorResponse("Security error: " + exc.getMessage(),
+                HttpStatus.UNAUTHORIZED);
     }
 
     private ResponseEntity<ResultResponse<Object,String>> buildErrorResponse(

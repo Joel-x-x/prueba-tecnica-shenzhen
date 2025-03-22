@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -23,6 +24,7 @@ public class UserController {
 
     private final UserService userService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<ResultResponse<Page<UserResponse>, String>> list(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         return ResponseEntity.ok(
@@ -32,6 +34,7 @@ public class UserController {
         );
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<ResultResponse<UserResponse, String>> get(@PathVariable UUID id) {
         return ResponseEntity.ok(
@@ -41,6 +44,7 @@ public class UserController {
         );
     }
 
+//    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<ResultResponse<UserResponse, String>> create(@RequestBody UserRequest request) {
         UserResponse response = this.userService.create(request);
@@ -58,6 +62,7 @@ public class UserController {
         );
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<ResultResponse<UserResponse, String>> update(@RequestBody UserRequest request, @PathVariable UUID id) {
         return ResponseEntity.ok(
@@ -67,8 +72,9 @@ public class UserController {
         );
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResultResponse<Boolean, String>> delete(@PathVariable UUID id) {
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
         this.userService.delete(id);
 
         return ResponseEntity.noContent()
