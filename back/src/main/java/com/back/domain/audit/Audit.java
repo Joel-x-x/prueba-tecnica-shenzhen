@@ -24,6 +24,7 @@ public abstract class Audit implements Serializable {
     @JdbcTypeCode(SqlTypes.CHAR)
     private UUID id;
 
+    @Builder.Default
     @Column(name = "deleted", nullable = false, columnDefinition = "BIT DEFAULT 0")
     private Boolean deleted = false;
 

@@ -123,8 +123,6 @@ class UserServiceTest {
     @Test
     void update() {
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
-        when(roleRepository.findByName(request.role())).thenReturn(Optional.of(role));
-        when(passwordEncoder.encode(request.password())).thenReturn("encodedPassword");
         when(userRepository.save(any(UserEntity.class))).thenReturn(user);
 
         UserResponse result =

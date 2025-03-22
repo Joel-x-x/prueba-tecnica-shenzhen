@@ -7,6 +7,7 @@ import com.back.infrastructure.exception.IntegrityValidation;
 import com.back.infrastructure.jwt.JwtService;
 import com.back.infrastructure.repository.RoleRepository;
 import com.back.infrastructure.repository.UserRepository;
+import com.back.service.auth.validation.RegisterAuthValidation;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -43,6 +45,9 @@ class AuthServiceTest {
 
     @Mock
     private AuthenticationManager authenticationManager;
+
+    @Mock
+    private List<RegisterAuthValidation> registerAuthValidations;
 
     @InjectMocks
     private AuthService authService;
