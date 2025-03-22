@@ -2,7 +2,6 @@ package com.back.controller.user;
 
 import com.back.domain.user.dto.UserRequest;
 import com.back.domain.user.dto.UserResponse;
-import com.back.domain.user.entity.UserEntity;
 import com.back.infrastructure.exception.ResultResponse;
 import com.back.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +43,7 @@ public class UserController {
         );
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<ResultResponse<UserResponse, String>> create(@RequestBody UserRequest request) {
         UserResponse response = this.userService.create(request);
