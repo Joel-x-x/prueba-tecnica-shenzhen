@@ -80,14 +80,12 @@ public class UserService {
         return new UserResponse(userRepository.save(user));
     }
 
-    public Boolean delete(UUID id) {
+    public void delete(UUID id) {
         UserEntity user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         user.setDeleted(true);
         userRepository.save(user);
-
-        return true;
     }
 
 }
