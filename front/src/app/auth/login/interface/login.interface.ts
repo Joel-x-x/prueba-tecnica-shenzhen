@@ -5,7 +5,7 @@ export interface ILogin {
 
 export interface ILoginResponse {
   result: {
-    acessToken: string;
+    accessToken: string;
     refreshToken: string;
   }
   success: boolean;

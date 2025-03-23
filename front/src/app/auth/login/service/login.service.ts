@@ -16,8 +16,8 @@ export class LoginService {
     return this.http.post<ILoginResponse>(`${environment.apiUrlBase}/auth/login`,login).pipe(
       tap(res => {
         if (res.success) {
-          this.authService.storeEncryptedToken("accessToken", res.result.acessToken);
-          this.authService.storeEncryptedToken("refreshToken", res.result.refreshToken);
+          console.log(res);
+          this.authService.storeTokens(res.result.accessToken, res.result.refreshToken);
         }
       }),
       catchError(error => {

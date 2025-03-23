@@ -40,7 +40,7 @@ throw new Error('Method not implemented.');
  displayedColumns: string[] = ['firstNames',  'lastNames', 'email', 'role', 'actions'];
  dataSource = new MatTableDataSource<IUser>();
  totalUsers: number = 0;
- pageSize: number = 1;
+ pageSize: number = 5;
  pageIndex: number = 0;
  users: IUser[] = []
 
@@ -52,10 +52,6 @@ throw new Error('Method not implemented.');
 
 
  ) {}
- /**
-  * Método de inicialización del componente.
-  * Se encarga de cargar la lista inicial de Pokémon.
-  */
 
  ngOnInit(): void {
    this.loadUsers();
@@ -81,7 +77,6 @@ throw new Error('Method not implemented.');
  ngOnDestroy(): void {
    this.subscriptions.unsubscribe();
  }
-
  ViewWillEnter() {
    this.loadUsers();
 
@@ -112,7 +107,6 @@ throw new Error('Method not implemented.');
      this.totalUsers = response.result.totalElements;
      this.users = response.result.content;
      this.dataSource.data = this.users;
-     console.log(response);
    });
 
    this.subscriptions.add(subscription);
@@ -123,6 +117,9 @@ throw new Error('Method not implemented.');
    this.loadUsers(this.pageIndex + 1);
  }
 
+
+
+
  OpenUserForm() {
    const dialogRef = this.dialog.open(UserFormComponent, {
      data: { id:'' } // Pasamos el ID
@@ -132,7 +129,7 @@ throw new Error('Method not implemented.');
      this.loadUsers();
    });
  }
- openUserFormEdit(id: number) {
+ OpenUserFormEdit(id: number) {
    const dialogRef = this.dialog.open(UserFormComponent, {
      data: { id: id } // Pasamos el ID
    });

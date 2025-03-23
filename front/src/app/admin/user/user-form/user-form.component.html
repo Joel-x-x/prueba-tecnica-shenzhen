@@ -1,1 +1,47 @@
-<p>user-form works!</p>
+<div class="w-full h-full m-auto bg-[var(--light)] rounded p-5">
+  <header>
+    <img class="w-20 mx-auto mb-5" src="../../../assets/images/logo.png" />
+  </header>
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+
+  <div class="mt-3">
+      <div>
+          <label class="block mb-2 text-[var(--dark)]" for="first-name">firstNames</label>
+          <input class="w-full p-2 text-[var(--dark)] border-b-2 border-[var(--primary)] outline-none focus:bg-[var(--light)]" type="text" name="first-name" id="first-name" formControlName="firstNames">
+        </div>
+  </div>
+  <div class="mt-3">
+      <div>
+          <label class="block mb-2 text-[var(--dark)]" >lastNames</label>
+          <input class="w-full p-2 text-[var(--dark)] border-b-2 border-[var(--primary)] outline-none focus:bg-[var(--light)]" type="text" name="last-name" id="last-name"formControlName="lastNames">
+        </div>
+  </div>
+  <div class="mt-3">
+      <div>
+          <label class="block mb-2 text-[var(--dark)]" >email</label>
+          <input class="w-full p-2 text-[var(--dark)] border-b-2 border-[var(--primary)] outline-none focus:bg-[var(--light)]" type="text" name="last-name" id="last-name"formControlName="email">
+        </div>
+  </div>
+
+  <div class="mt-3">
+      <label class="block mb-2 text-[var(--dark)]">Rol</label>
+      <select class="w-full p-2 text-[var(--dark)] border-b-2 border-[var(--primary)] outline-none bg-[var(--light)]" formControlName="roles">
+        <option value="" disabled selected>Selecciona un rol</option>
+        <option  value="USER">User</option>
+        <option  value="ADMIN">Admin</option>
+      </select>
+  </div>
+
+    <div class="mt-6">
+      <button
+  class="w-full text-white font-bold py-2 px-4 mb-6 rounded transition-all duration-300
+  bg-sky-600 hover:bg-sky-800
+  disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400"
+  (click)="onSubmitUser()"
+  [disabled]="!userForm.valid">
+  Guardar
+</button>
+
+    </div>
+  </form>
+</div>
