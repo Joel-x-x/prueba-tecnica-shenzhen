@@ -16,7 +16,7 @@ export class RegisterService {
     return this.http.post<IRegisterResponse>(`${environment.apiUrlBase}/auth/register`, register).pipe(
       tap(res => {
         if(res.id){
-          this.authService.storeEncryptedToken(res.id);
+          this.authService.storeEncryptedToken("id", res.id);
           console.log("User registered successfully");
         }
       }),

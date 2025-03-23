@@ -15,8 +15,9 @@ export class LoginService {
   login(login: ILogin): Observable<ILoginResponse | any> {
     return this.http.post<ILoginResponse>(`${environment.apiUrlBase}/auth/login`,login).pipe(
       tap(res => {
-        if (res.acessToken) {
-          this.authService.storeEncryptedToken(res.acessToken);
+        if (res.success) {
+          this.authService.storeEncryptedToken("accessToken", res.result.acessToken);
+          this.authService.storeEncryptedToken("refreshToken", res.result.refreshToken);
         }
       }),
       catchError(error => {

@@ -3,6 +3,7 @@ import { LoginService } from './service/login.service';
 import { AlertsService } from '../../services/alerts.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../service/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,7 @@ export class LoginComponent {
 
   constructor(
     private loginService: LoginService,
+    private authService: AuthService,
     private alertsService: AlertsService,
     private router: Router
   ) {}
@@ -36,7 +38,7 @@ export class LoginComponent {
     this.loginService.login(credentials).subscribe({
       next: (res) => {
         this.alertsService.success("Login exitoso");
-        this.router.navigate(['/auth/login']);
+        this.router.navigate(['/admin/user']);
       },
       error: (error) => {
         console.error('Error: ', error);

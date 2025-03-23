@@ -4,6 +4,9 @@ export interface ILogin {
 }
 
 export interface ILoginResponse {
-  acessToken: string;
-  refreshToken: string;
+  result: {
+    acessToken: string;
+    refreshToken: string;
+  }
+  success: boolean;
 }

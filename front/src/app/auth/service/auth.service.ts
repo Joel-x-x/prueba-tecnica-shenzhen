@@ -9,9 +9,9 @@ export class AuthService {
 
   constructor() { }
 
-  storeEncryptedToken(token: string): void {
-    const encryptedToken = CryptoJS.AES.encrypt(token, environment.secretKey).toString();
-    localStorage.setItem('accessToken', encryptedToken);
+  storeEncryptedToken(key: string, value: string): void {
+    const encryptedToken = CryptoJS.AES.encrypt(value, environment.secretKey).toString();
+    localStorage.setItem(key, encryptedToken);
   }
 
   getDecryptedToken(): string | null {
