@@ -69,10 +69,14 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         if(!StringUtils.isBlank(request.role())) {
+
             RoleEntity role = roleRepository.findByName(request.role())
                     .orElseThrow(() -> new IntegrityValidation("Role not found"));
-            Set<RoleEntity> roles = Collections.singleton(role);
-            user.setRoles(roles);
+
+            if(!user.getRoles().contains(role)) {
+                user.getRoles().removeIf(x -> true);
+                user.getRoles().add(role);
+            }
         }
 
         if (!StringUtils.isBlank(request.firstNames()))
