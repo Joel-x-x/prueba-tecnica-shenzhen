@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ILogin, ILoginResponse } from '../../register/interface/login.interface';
+import { ILogin, ILoginResponse } from '../interface/login.interface';
 import { catchError, Observable, tap } from 'rxjs';
 import { environment } from '../../../../environments/enviroment';
 import { AuthService } from '../../service/auth.service';
