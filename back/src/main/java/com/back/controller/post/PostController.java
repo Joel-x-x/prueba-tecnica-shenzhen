@@ -27,7 +27,8 @@ public class PostController {
 
     @GetMapping("/public")
     public ResponseEntity<ResultResponse<Page<PostResponse>, String>> listPublic(
-            @PageableDefault(page = 0, size = 10) Pageable pageable) {
+            @PageableDefault(page = 0, size = 10)
+            Pageable pageable) {
         return ResponseEntity.ok(
                 ResultResponse.success(
                         this.postService.listPublic(pageable), 200
@@ -38,7 +39,8 @@ public class PostController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping
     public ResponseEntity<ResultResponse<Page<PostResponse>, String>> list(
-            @PageableDefault(page = 0, size = 10) Pageable pageable, Authentication authentication) {
+            @PageableDefault(page = 0, size = 10) Pageable pageable,
+            Authentication authentication) {
         return ResponseEntity.ok(
                 ResultResponse.success(
                         this.postService.list(pageable, authentication), 200

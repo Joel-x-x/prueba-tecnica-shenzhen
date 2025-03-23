@@ -44,7 +44,7 @@ class PostServiceTest {
                 .id(postId)
                 .title("Test Title")
                 .content("Test Content")
-                .isPublic(true)
+                .isPublic(false)
                 .user(user)
                 .deleted(false)
                 .build();
@@ -94,7 +94,7 @@ class PostServiceTest {
     @Test
     void getUnauthorized() {
         UserEntity otherUser = new UserEntity();
-        otherUser.setId(UUID.randomUUID());
+        otherUser.setId(UUID.randomUUID()); // Un usuario diferente al autenticado
         post.setUser(otherUser);
 
         when(postRepository.findById(postId)).thenReturn(Optional.of(post));
