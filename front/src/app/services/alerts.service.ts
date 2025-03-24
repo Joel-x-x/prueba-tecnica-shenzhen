@@ -15,4 +15,12 @@ export class AlertsService {
       draggable: true
     });
   }
+
+  error(message: string) {
+    Swal.fire({
+      title: message,
+      icon: "error",
+      draggable: true
+    });
+  }
 }

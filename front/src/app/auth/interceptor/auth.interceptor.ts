@@ -17,10 +17,10 @@ export class AuthInterceptor implements HttpInterceptor {
   private isRefreshing = false;
   private refreshTokenSubject: Subject<string | null> = new Subject<string | null>();
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (this.excludedUrls.some(url => req.url.includes(url))) {
+    if (this.isExcluded(req.url)) {
       return next.handle(req);
     }
 
@@ -40,34 +40,39 @@ export class AuthInterceptor implements HttpInterceptor {
     );
   }
 
-  private handle401Error(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (!this.isRefreshing) {
-      this.isRefreshing = true;
-      this.refreshTokenSubject.next(null);
+  private isExcluded(url: string): boolean {
+    return this.excludedUrls.some(excludedUrl => url.endsWith(excludedUrl)
+    );
+}
 
-      return this.authService.refreshToken().pipe(
-        switchMap((newAccessToken: string) => {
-          this.isRefreshing = false;
-          this.refreshTokenSubject.next(newAccessToken);
-          const clonedReq = req.clone({ setHeaders: { Authorization: `Bearer ${newAccessToken}` } });
-          return next.handle(clonedReq);
-        }),
-        catchError(error => {
-          this.isRefreshing = false;
-          this.authService.logout();
-          this.router.navigate(['/auth/login']);
-          return throwError(() => error);
-        })
-      );
-    } else {
-      return this.refreshTokenSubject.pipe(
-        filter(token => token !== null),
-        take(1),
-        switchMap(token => {
-          const clonedReq = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
-          return next.handle(clonedReq);
-        })
-      );
-    }
+  private handle401Error(req: HttpRequest<any>, next: HttpHandler): Observable < HttpEvent < any >> {
+  if(!this.isRefreshing) {
+  this.isRefreshing = true;
+  this.refreshTokenSubject.next(null);
+
+  return this.authService.refreshToken().pipe(
+    switchMap((newAccessToken: string) => {
+      this.isRefreshing = false;
+      this.refreshTokenSubject.next(newAccessToken);
+      const clonedReq = req.clone({ setHeaders: { Authorization: `Bearer ${newAccessToken}` } });
+      return next.handle(clonedReq);
+    }),
+    catchError(error => {
+      this.isRefreshing = false;
+      this.authService.logout();
+      this.router.navigate(['/auth/login']);
+      return throwError(() => error);
+    })
+  );
+} else {
+  return this.refreshTokenSubject.pipe(
+    filter(token => token !== null),
+    take(1),
+    switchMap(token => {
+      const clonedReq = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+      return next.handle(clonedReq);
+    })
+  );
+}
   }
 }

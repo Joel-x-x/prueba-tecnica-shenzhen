@@ -19,6 +19,13 @@ export class SidebarComponent {
     this.getRoute();
   }
 
+  toggleSidebar() {
+    const sidebar = document.getElementById('default-sidebar');
+    if (sidebar) {
+      sidebar.classList.toggle('-translate-x-full');
+    }
+  }
+
   getRoute() {
     const path = window.location.pathname.split('/');
     this.currentTab = path[path.length - 1];
@@ -32,6 +39,7 @@ export class SidebarComponent {
     this.router.navigate([`/admin/${tab}`]);
     setTimeout(() => {
       this.getRoute();
+      this.toggleSidebar();
     }, 200)
   }
 

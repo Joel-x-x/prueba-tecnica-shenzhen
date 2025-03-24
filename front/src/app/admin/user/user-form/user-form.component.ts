@@ -1,103 +1,148 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { UserComponent } from '../user.component';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AlertsService } from '../../../services/alerts.service';
 import { UserService } from '../services/user.service';
-import { IUser } from '../interfaces/user.interface';
+import { IUser, IUserRequest } from '../interfaces/user.interface';
+import { hasLowerCase, hasNumber, hasSpecialCharacter, hasUpperCase } from '../../../auth/validators';
 
 @Component({
   selector: 'app-user-form',
-  imports: [FormsModule,
-    ReactiveFormsModule
-  ],
   templateUrl: './user-form.component.html',
-  styleUrl: './user-form.component.scss'
+  styleUrl: './user-form.component.scss',
+  standalone: false
 })
-export class UserFormComponent {
-  onSubmit() {
-    throw new Error('Method not implemented.');
+
+export class UserFormComponent implements OnInit, OnDestroy {
+
+  private subscriptions: Subscription = new Subscription();
+  user: IUserRequest | undefined;
+  userResponse: IUser | undefined;
+
+  userForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    firstNames: new FormControl('', [Validators.required]),
+    lastNames: new FormControl('', [Validators.required]),
+    role: new FormControl('', [Validators.required]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8),
+      hasSpecialCharacter,
+      hasNumber,
+      hasUpperCase,
+      hasLowerCase,
+    ]),
+    passwordConfirmar: new FormControl('', [Validators.required,this.confirmarClave,]),
+  });
+
+  constructor(
+    public dialogRef: MatDialogRef<UserFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { id: string },
+    private userService: UserService,
+    private alertService: AlertsService
+  ) {}
+
+  ngOnInit() {
+    if (this.data.id) {
+      this.getUsuario();
+      this.removeValidationsForEdit();
     }
-     private subscriptions: Subscription = new Subscription();
-      constructor(
-        public dialogRef: MatDialogRef<UserComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: { id: string }, private userService: UserService, private alertService: AlertsService
-      ) {}
-      user: IUser | undefined;
-     userForm = new FormGroup({
-        email: new FormControl('', [Validators.required]),
-        firstNames: new FormControl('', [Validators.required]),
-        lastNames: new FormControl('', [Validators.required]),
-        roles: new FormControl('', [Validators.required]),
-      });
-      ngOnInit() {
-        console.log("ID recibido:", this.data.id);
-        if (this.data.id) {
-          this.getUsuario()
+  }
+
+  getUsuario() {
+    this.subscriptions.add(
+      this.userService.getUser(this.data.id).subscribe({
+        next: (data) => {
+          this.userForm.patchValue({
+            email: data.result.email,
+            firstNames: data.result.firstNames,
+            lastNames: data.result.lastNames,
+            role: data.result.roles[0].name
+          });
+          this.userResponse = data.result;
+        },
+        error: (error) => {
+          console.error('Error al obtener usuario:', error);
+          this.alertService.error('No se pudo obtener la información del usuario.');
+        }
+      })
+    );
+  }
+
+  get fControls() {
+    return this.userForm.controls;
+  }
+
+  onSubmitUser() {
+    if (this.userForm.invalid) {
+      this.userForm.markAllAsTouched(); // Muestra errores en el formulario
+      return;
+    }
+
+    const user: IUserRequest = {
+      ...(this.userForm.value as unknown as IUserRequest),
+      id: this.data.id
+    };
+
+    if (this.data.id) {
+      // Actualizar usuario
+      this.subscriptions.add(
+        this.userService.updateUser(user).subscribe({
+          next: () => {
+            this.alertService.success("Usuario actualizado correctamente");
+            this.cerrarModal();
+          },
+          error: (error) => {
+            console.error('Error al actualizar usuario:', error);
+            this.alertService.error('No se pudo actualizar el usuario.');
+          }
+        })
+      );
+    } else {
+      // Crear nuevo usuario
+      this.subscriptions.add(
+        this.userService.createUser(user).subscribe({
+          next: () => {
+            this.alertService.success("Usuario creado correctamente");
+            this.cerrarModal();
+          },
+          error: (error) => {
+            console.error('Error al crear usuario:', error);
+            this.alertService.error('No se pudo crear el usuario.');
+          }
+        })
+      );
+    }
+  }
+
+  confirmarClave(control: FormControl): {[s: string]: boolean} {
+    const formGroup = control.parent;
+    if (formGroup) {
+      const claveControl = formGroup.get('password');
+      const claveConfirmarControl = formGroup.get('passwordConfirmar');
+      if (claveControl && claveConfirmarControl) {
+        if (claveControl.value === claveConfirmarControl.value) {
+          return {}; // La validación es exitosa
         }
       }
-      getUsuario(){
-        this.userService.getUser(this.data.id).subscribe({
-          next: data => {
-            this.userForm.patchValue({ ...data });
-            console.log('Configuración por ID:', data);
-            this.user = data;
-          },
-          error: error => {
+    }
+    return { 'noCoincide': true }; // La validación falla
+  }
 
-          },
-          complete: () => {
-          }
-        });
-      }
-      onSubmitUser() {
-         if (this.userForm.valid) {
-              console.log('Formulario enviado:', this.userForm.value);
+  removeValidationsForEdit() {
+    this.userForm.get('firstNames')?.clearValidators();
+    this.userForm.get('lastNames')?.clearValidators();
+    this.userForm.get('password')?.clearValidators();
+    this.userForm.get('passwordConfirmar')?.clearValidators();
+    this.userForm.updateValueAndValidity();
+  }
 
-              if (this.user) {
-                const user: IUser = {
-                  ...(this.userForm.value as unknown as IUser),
-                  'id': this.user.id,
+  cerrarModal() {
+    this.dialogRef.close();
+  }
 
-                };
-                console.log('Actualizando configuración:', user);
-                this.userService.updateUser(user).subscribe({
-                  next: data => {
-                    console.log('Configuración actualizada:', data);
-                  },
-                  error: error => {
-                  },
-                  complete: () => {
-                    this.alertService.success("Usuario actualizado correctamente")
-
-                    this.cerrarModal()
-
-                  }
-                });
-              } else {
-                const user: IUser = {
-                  ...(this.userForm.value as unknown as IUser),
-                };
-                this.userService.createUser(user).subscribe({
-                  next: data => {
-                    console.log('Configuración creada:', data);
-
-                  },
-                  error: error => {
-
-                  },
-                  complete: () => {
-                    this.alertService.success("Usuario creado correctamente")
-                    this.cerrarModal()
-                  }
-                });
-              }
-
-            }
-      }
-
-      cerrarModal() {
-        this.dialogRef.close();
-      }
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
 }

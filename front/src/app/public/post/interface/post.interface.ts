@@ -1,30 +1,15 @@
-export interface IUser{
-  id: string;
-  email: string;
-  firstNames: string;
-  lastNames: string;
-  roles: IRole[];
+export interface IPost {
+  id?: string;
+  titulo: string;
+  contenido: string;
+  isPublic: boolean;
+  created?: Date;
+  userId?: string;
 }
 
-export interface IUserResponse{
-  code: number;
-  error: string[];
-  success: boolean;
-  result: IUser;
-}
-
-export interface IUserRequest{
-  id: string;
-  email: string;
-  firstNames: string;
-  lastNames: string;
-  password?: string;
-  role: string;
-}
-
-export interface IUserPaginateResponse{
+export interface IPostPaginateResponse{
   result: {
-      content: IUser[];
+      content: IPost[];
       pageable: {
           pageNumber: number;
           pageSize: number;
@@ -55,9 +40,5 @@ export interface IUserPaginateResponse{
   code: number;
   success: boolean;
 
-}
-export interface IRole{
-  id: string;
-  name: string;
 }
 

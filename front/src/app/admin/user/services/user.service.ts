@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IUser, IUserResponse } from '../interfaces/user.interface';
+import { IUserRequest, IUserPaginateResponse, IUserResponse } from '../interfaces/user.interface';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/enviroment';
 
@@ -12,28 +12,28 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  getUsers(page: number, pageSize: number): Observable<IUserResponse> {
+  getUsers(page: number, pageSize: number): Observable<IUserPaginateResponse> {
     const offset = (page - 1) * pageSize;
     const params = new HttpParams()
       .set('offset', offset.toString())
       .set('limit', pageSize.toString());
 
-    return this.http.get<IUserResponse>(this.apiUrl, { params });
+    return this.http.get<IUserPaginateResponse>(this.apiUrl, { params });
   }
 
-  getUser(id: string): Observable<IUser> {
-    return this.http.get<IUser>(`${this.apiUrl}/${id}`);
+  getUser(id: string): Observable<IUserResponse> {
+    return this.http.get<IUserResponse>(`${this.apiUrl}/${id}`);
   }
 
-  updateUser(user: IUser): Observable<IUser> {
-    return this.http.put<IUser>(`${this.apiUrl}/${user.id}`, user);
+  updateUser(user: IUserRequest): Observable<IUserResponse> {
+    return this.http.put<IUserResponse>(`${this.apiUrl}/${user.id}`, user);
   }
 
   deleteUser(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  createUser(user: IUser): Observable<IUser> {
-    return this.http.post<IUser>(this.apiUrl, user);
+  createUser(user: IUserRequest): Observable<IUserResponse> {
+    return this.http.post<IUserResponse>(this.apiUrl, user);
   }
 }
