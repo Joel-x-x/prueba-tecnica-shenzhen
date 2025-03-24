@@ -40,6 +40,7 @@ Antes de iniciar, asegúrate de tener instalado:
 ---
 
 ## Instalación y Ejecución
+Toma en cuenta ejecutar los comandos de docker y slq server en las CLI correspondientes o caso contrario agregarlas en las variables de entorno del sistema operativo.
 ### 1. Clonar el Proyecto
 ```sh
 git clone https://github.com/Joel-x-x/prueba-tecnica-shenzhen.git
