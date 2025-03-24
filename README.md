@@ -29,10 +29,9 @@
 ## Requisitos Previos
 Antes de iniciar, asegúrate de tener instalado:
 - **Git**
-- **Docker y Docker Compose**
-- **Node.js y Angular CLI**
-- **Java 17+ y Maven**
-- **SQL Server Management Studio (SSMS) o Azure Data Studio**
+- **Docker & Docker Compose & Docker CLI**
+- **Node.js y Angular CLI** (En caso de incopatibilidad usar las versiones Angular CLI: 19.2.4 Node: 22.13.1)
+- **MSSQL-CLI**
 
 ---
 
@@ -63,25 +62,15 @@ docker-compose up -d back
 cd front
 ng serve -o
 ```
+### 5. Cuenta Admin
+#### Tanto para correo como para password
+```sh
+admin@gmail.com
+```
 
 ---
 
 ## Documentación Adicional
 - **API Docs:** Swagger disponible en `http://localhost:8080/swagger-ui.html`
 - **Colección de Postman:** Incluida en la carpeta `docs/postman`
-
----
-
-## Contribuciones
-Cualquier contribución es bienvenida. Para contribuir:
-1. Haz un fork del repositorio.
-2. Crea una rama (`git checkout -b feature-nueva`).
-3. Realiza tus cambios y haz un commit (`git commit -m 'Nueva funcionalidad'`).
-4. Sube tu rama (`git push origin feature-nueva`).
-5. Abre un Pull Request.
-
----
-
-## Licencia
-Este proyecto está bajo la licencia MIT. Consulta el archivo `LICENSE` para más detalles.
 
