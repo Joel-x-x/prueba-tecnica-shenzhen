@@ -1,6 +1,8 @@
 # Postea
 ![2025-03-24 07-22-10](https://github.com/user-attachments/assets/3620fa66-0dd9-42f0-8a14-a8c674a220ea)
 
+## Video de instalación
+![Instalacion](https://github.com/user-attachments/assets/605d045f-07cc-4ed0-a4c6-2a182c623dbf)
 
 ## Descripción
 **Postea** es una aplicación Full Stack desarrollada con **Spring Boot 3.2.6** y **Angular 19**, que permite la gestión de usuarios y publicaciones. Utiliza **Hibernate (JPA)** para la persistencia en **SQL Server** y sigue principios de **arquitectura limpia**.
