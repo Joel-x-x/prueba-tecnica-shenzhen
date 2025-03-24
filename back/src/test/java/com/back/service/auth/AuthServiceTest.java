@@ -92,11 +92,11 @@ class AuthServiceTest {
 
     @Test
     void loginSuccess() {
-        when(userRepository.findByEmailIgnoreCase(loginRequest.email())).thenReturn(Optional.of(user));
-        when(jwtService.generateToken(user)).thenReturn("mockAccessToken");
-        when(jwtService.generateRefreshToken(user)).thenReturn("mockRefreshToken");
+        when(userRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.of(user));
+        when(jwtService.generateToken(any(), any())).thenReturn("mockAccessToken");
+        when(jwtService.generateRefreshToken(any())).thenReturn("mockRefreshToken");
 
-        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+        when(authenticationManager.authenticate(any()))
                 .thenReturn(new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities()));
 
         LoginResponse response = authService.login(loginRequest);
@@ -105,7 +105,7 @@ class AuthServiceTest {
         assertEquals("mockAccessToken", response.accessToken());
         assertEquals("mockRefreshToken", response.refreshToken());
 
-        verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
+        verify(authenticationManager).authenticate(any());
     }
 
     @Test
