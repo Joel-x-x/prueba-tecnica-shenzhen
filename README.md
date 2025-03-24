@@ -48,6 +48,10 @@ cd prueba-tecnica-shenzhen
 ```sh
 docker-compose up -d sqlserver
 ```
+Conectar desde la CLI de SQL Server
+```sql
+sqlcmd -S localhost -U sa -P S3guro!Pass
+```
 Una vez que la base de datos esté lista, abre la terminal de SQL Server y ejecuta:
 ```sql
 CREATE DATABASE shenzhen;
@@ -62,6 +66,7 @@ docker-compose up -d back
 ### 4. Ejecutar el Frontend
 ```sh
 cd front
+npm i
 ng serve -o
 ```
 ### 5. Cuenta Admin
