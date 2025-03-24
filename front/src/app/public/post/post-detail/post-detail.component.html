@@ -1,0 +1,30 @@
+<div class="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 flex flex-col py-12 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto bg-gray-800 p-6 rounded-lg shadow-lg">
+    <!-- Título del post -->
+    <h1 class="mb-4 text-3xl font-extrabold text-white md:text-4xl">
+      {{ post.title }}
+    </h1>
+
+    <!-- Autor y fecha -->
+    <div class="mb-4 text-gray-400 flex items-center space-x-3">
+      <span class="font-semibold text-gray-300">Por {{ post.author }}</span>
+      <span class="text-sm">{{ post.created }}</span>
+    </div>
+
+    <!-- Contenido del post -->
+    <p class="text-lg text-gray-300 leading-relaxed">
+      {{ post.content }}
+    </p>
+
+    <!-- Botón para regresar -->
+    <div class="mt-6">
+      <a (click)="volver()" class="text-sky-400 hover:text-sky-300 font-medium inline-flex items-center cursor-pointer transition-all duration-300">
+        <svg class="w-4 h-4 mr-2 text-sky-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M11 15l-4.833-4.833A1.166 1.166 0 0 1 5 8.833V2.167A1.167 1.167 0 0 1 6.167 1h11.666A1.167 1.167 0 0 1 19 2.167v11.666A1.167 1.167 0 0 1 17.833 15H11z" />
+        </svg>
+        Volver a posts
+      </a>
+    </div>
+  </div>
+</div>

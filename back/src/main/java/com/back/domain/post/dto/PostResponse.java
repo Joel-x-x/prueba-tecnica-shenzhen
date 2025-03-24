@@ -13,10 +13,13 @@ public record PostResponse(
     String content,
     Boolean isPublic,
     LocalDateTime created,
-    UUID userId
+    UUID userId,
+    String author
 ) {
     public PostResponse(PostEntity post) {
         this(post.getId(), post.getTitle(), post.getContent(), post.getIsPublic(),
-                post.getCreatedAt(), post.getUser().getId());
+                post.getCreatedAt(), post.getUser().getId(),
+                post.getUser().getFirstNames() + " " + post.getUser().getLastNames()
+        );
     }
 }

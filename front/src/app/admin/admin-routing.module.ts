@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { UserComponent } from './user/user.component';
 import { PostComponent } from './post/post.component';
+import { RoutesGuard } from '../guard/routes.guard';
 
 const routes: Routes = [
   {
@@ -11,7 +12,8 @@ const routes: Routes = [
     children: [
       {
         path: 'user',
-        component: UserComponent
+        component: UserComponent,
+        canActivate: [RoutesGuard]
       },
       {
         path: 'post',

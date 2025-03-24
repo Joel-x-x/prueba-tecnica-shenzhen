@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -83,6 +84,14 @@ public class ErrorHandler {
     ) {
         return buildErrorResponse("Integrity validation: " + exc.getMessage(),
                 HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ResultResponse<Object,String>> handleIntegrityValidation(
+            AccessDeniedException exc
+    ) {
+        return buildErrorResponse("Access denied: " + exc.getMessage(),
+                HttpStatus.FORBIDDEN);
     }
 
     private ResponseEntity<ResultResponse<Object,String>> buildErrorResponse(

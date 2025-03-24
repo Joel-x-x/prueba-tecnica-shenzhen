@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './guard/auth.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'auth/register',
+    redirectTo: 'public/landing',
     pathMatch: 'full'
   },
   {
@@ -12,7 +13,10 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
-    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
+    canActivateChild: [
+      AuthGuard
+    ],
   },
   {
     path: 'public',

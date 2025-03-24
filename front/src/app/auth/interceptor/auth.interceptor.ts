@@ -10,6 +10,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   private excludedUrls = [
     '/public/post',
+    '/public/post/detail',
     '/auth/login',
     '/auth/register'
   ];

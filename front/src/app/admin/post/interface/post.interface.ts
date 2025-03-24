@@ -1,10 +1,18 @@
 export interface IPost {
   id?: string;
-  titulo: string;
-  contenido: string;
+  title: string;
+  content: string;
   isPublic: boolean;
   created?: Date;
   userId?: string;
+  author?: string;
+}
+
+export interface IPostResponse{
+  code: number;
+  error: string[];
+  success: boolean;
+  result: IPost;
 }
 
 export interface IPostPaginateResponse{

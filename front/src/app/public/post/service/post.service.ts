@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/enviroment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IPostPaginateResponse } from '../interface/post.interface';
+import { IPostPaginateResponse, IPostResponse } from '../interface/post.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +14,15 @@ export class PostService {
 
   getPublicPosts(page: number, pageSize: number):
   Observable<IPostPaginateResponse> {
-    const offset = (page -1) * pageSize;
     const params = new HttpParams()
-      .set('offset', offset.toString())
-      .set('limit', pageSize.toString());
+    .set('page', page.toString())
+    .set('size', pageSize.toString());
 
-    return this.http.get<IPostPaginateResponse>(this.apiUrl, { params });
+  return this.http.get<IPostPaginateResponse>(this.apiUrl, { params });
   }
+
+    getPost(id: string): Observable<IPostResponse> {
+      return this.http.get<IPostResponse>(`${this.apiUrl}/${id}`);
+    }
 
 }

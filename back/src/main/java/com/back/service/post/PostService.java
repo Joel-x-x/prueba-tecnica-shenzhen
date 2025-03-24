@@ -125,4 +125,8 @@ public class PostService {
                 .orElseThrow(() -> new EntityNotFoundException("Post not " +
                         "found"));
     }
+
+    public PostResponse getPublic(UUID id) {
+        return new PostResponse(findPostById(id));
+    }
 }

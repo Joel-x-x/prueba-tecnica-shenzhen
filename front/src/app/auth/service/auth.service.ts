@@ -16,6 +16,23 @@ export class AuthService {
     private router: Router
   ) {}
 
+  decodeJWT(token: string): any {
+    try {
+      const payload = token.split('.')[1]; // Tomamos la segunda parte del token (payload)
+      const decoded = atob(payload); // Decodificamos la base64
+      return JSON.parse(decoded); // Convertimos el JSON a objeto
+    } catch (error) {
+      console.error('Error al decodificar el JWT:', error);
+      return null;
+    }
+  }
+
+  getUser(): Observable<any> {
+    const id = this.decodeJWT(this.getToken() ?? '')?.id;
+    console.log(id);
+    return this.httpClient.get<any>(`${this.apiUrl}/users/${id}`);
+  }
+
   storeTokens(accessToken: string, refreshToken: string): void {
     localStorage.setItem('accessToken', accessToken);
     localStorage.setItem('refreshToken', refreshToken);

@@ -13,10 +13,9 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getUsers(page: number, pageSize: number): Observable<IUserPaginateResponse> {
-    const offset = (page - 1) * pageSize;
     const params = new HttpParams()
-      .set('offset', offset.toString())
-      .set('limit', pageSize.toString());
+    .set('page', page.toString())
+    .set('size', pageSize.toString());
 
     return this.http.get<IUserPaginateResponse>(this.apiUrl, { params });
   }

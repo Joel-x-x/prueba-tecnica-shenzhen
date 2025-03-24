@@ -8,6 +8,7 @@ import { UserFormComponent } from './user-form/user-form.component';
 import { IUser } from './interfaces/user.interface';
 import { UserService } from './services/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '../../auth/service/auth.service';
 
 @Component({
   selector: 'app-user',
@@ -20,7 +21,7 @@ export class UserComponent {
   displayedColumns: string[] = ['firstNames', 'lastNames', 'email', 'roles', 'actions'];
   dataSource = new MatTableDataSource<IUser>();
   totalUsers: number = 0;
-  pageSize: number = 5;
+  pageSize: number = 10;
   pageIndex: number = 0;
   users: IUser[] = [];
 
@@ -30,7 +31,7 @@ export class UserComponent {
   constructor(
     private userService: UserService,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit(): void {
@@ -41,7 +42,7 @@ export class UserComponent {
     this.subscriptions.unsubscribe();
   }
 
-  loadUsers(page: number = 1): void {
+  loadUsers(page: number = 0): void {
     const subscription = this.userService.getUsers(page, this.pageSize).subscribe(response => {
       this.totalUsers = response.result.totalElements;
       this.users = response.result.content;
@@ -52,7 +53,7 @@ export class UserComponent {
 
   onPageChange(event: PageEvent): void {
     this.pageIndex = event.pageIndex;
-    this.loadUsers(this.pageIndex + 1);
+    this.loadUsers(this.pageIndex);
   }
 
   OpenUserForm(): void {

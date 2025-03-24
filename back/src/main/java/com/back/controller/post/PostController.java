@@ -36,6 +36,16 @@ public class PostController {
         );
     }
 
+    @GetMapping("/public/{id}")
+    public ResponseEntity<ResultResponse<PostResponse, String>> getPublic(
+            @PathVariable UUID id) {
+        return ResponseEntity.ok(
+                ResultResponse.success(
+                        this.postService.getPublic(id), 200
+                )
+        );
+    }
+
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping
     public ResponseEntity<ResultResponse<Page<PostResponse>, String>> list(

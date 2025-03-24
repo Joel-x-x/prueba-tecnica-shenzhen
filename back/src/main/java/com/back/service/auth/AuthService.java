@@ -19,9 +19,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -98,7 +96,10 @@ public class AuthService {
                            )
                    );
 
-                   String accessToken = jwtService.generateToken(user);
+                   String accessToken =
+                           jwtService.generateToken(
+                                   Map.of("id", user.getId()),
+                                   user);
                    String refreshToken = jwtService.generateRefreshToken(user);
 
                    return new LoginResponse(

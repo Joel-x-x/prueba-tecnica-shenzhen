@@ -34,7 +34,7 @@ public class UserController {
         );
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/{id}")
     public ResponseEntity<ResultResponse<UserResponse, String>> get(@PathVariable UUID id) {
         return ResponseEntity.ok(

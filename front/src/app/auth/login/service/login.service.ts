@@ -16,7 +16,6 @@ export class LoginService {
     return this.http.post<ILoginResponse>(`${environment.apiUrlBase}/auth/login`,login).pipe(
       tap(res => {
         if (res.success) {
-          console.log(res);
           this.authService.storeTokens(res.result.accessToken, res.result.refreshToken);
         }
       }),

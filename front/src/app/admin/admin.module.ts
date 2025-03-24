@@ -13,9 +13,6 @@ import { RouterModule } from '@angular/router';
 import { AdminRoutingModule } from './admin-routing.module';
 import { PostComponent } from './post/post.component';
 import { PostFormComponent } from './post/post-form/post-form.component';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from '../auth/interceptor/auth.interceptor';
-
 
 @NgModule({
   declarations: [

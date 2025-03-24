@@ -1,6 +1,8 @@
 import { NgClass } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
+import { AuthService } from '../../auth/service/auth.service';
+import { IRole, IUser, IUserResponse } from '../user/interfaces/user.interface';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,13 +12,32 @@ import { Router, RouterOutlet } from '@angular/router';
 })
 export class SidebarComponent {
   currentTab: string = '';
+  user: IUser = {
+    id: "",
+    email: "",
+    firstNames: "",
+    lastNames: "",
+    roles: [
+      {
+        id: "",
+        name: ""
+      }
+    ]
+  };
 
-
-  constructor(private router: Router
+  constructor(
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
     this.getRoute();
+    this.authService.getUser().subscribe({
+      next: response => {
+        this.user = response.result;
+        console.log(this.user);
+      }
+    });
   }
 
   toggleSidebar() {
