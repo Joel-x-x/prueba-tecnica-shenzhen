@@ -1,4 +1,5 @@
 services:
+# SQL DB
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver_container
@@ -14,7 +15,7 @@ services:
       - sqlserver_data:/var/opt/mssql
     networks:
       - mynetwork
-
+  # Back spring boot
   back:
     build:
       context: ./back
